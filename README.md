@@ -101,3 +101,66 @@ Basic example of implementing dagger2 for dependency injection.
 
 - Remember to use @Inject annotation for all the constructors of the dependencies. And Remember to use a component
   interface annotated with component interface to tell dagger to construct those dependencies.
+
+/*******************************************************Dagger Modules**********************************************/
+
+- Whenever we are using dagger we should go with constructor injection for all classes you own.
+
+- But what about classes where we cannot access the constructor, like when we are using a Retrofit,
+ we build it using its builder method.
+
+- Or when we can’t instantiate the dependency, like a context object. When we are using the classes
+ we don’t own, classes form third party libraries, we cannot open the class and add
+ @Inject annotation to the constructor.
+
+
+- For this type of situations we can use modules and write provider methods to provide those dependencies.
+  But remember, you should create modules only when you actually need them.
+
+- Example:
+
+ - Just for the demonstration of the concept, let’s assume that we don’t own this MemoryCard class.
+   So we cannot add this @Inject annotation here.Let’s remove it.
+
+ - Now I am creating a module class for this dependency.
+
+ - Create a new java class. Name it as MemoryCardModule.
+
+ - To make this a dagger module we need to annotate it with module annotation.
+
+ - Now I am creating a provider method with the Return type of MemoryCard. Name it as provideMemoryCard.
+
+ - You can give any name for the method. But we usually start the name with provide
+   We can construct a MemoryCard instance and retrun it here.
+
+ - We need to annotate this method with @provides annotation.
+
+ - Marking a method with this annotation tells dagger, that this method provides the return data type.
+
+ - Now open the SmartPhoneComponent interface. Here we should link our module to this component.
+
+ - Let’s rebuild the project now.
+
+ - If you run this project you will see that we are getting the same result.
+
+
+ - So, This is the dependency graph of our small project.
+
+      - SmartPhone ----> Battery
+	-            ----> MemoryCard
+	-	     ----> SimCard ----> ServiceProvider
+- To construct SmartPhone dependency dagger has to first get other dependencies.
+
+- Dagger construct 3 of them considering @inject annotated constructors.
+
+- Dagger gets other one from the provider method of the MemoryCardModule.
+
+- This module has only one provider method. But a module can have more than one provider methods.
+
+- Module annotation is basically used on a class to grouping of similar types of @Provides methods together.
+
+- Here , we can make this provider method as static. If the provider methods of the module
+  does not depend on any instance variable of the module we can make those methods static.
+
+- If your module only has static provide methods, Dagger will never need to instantiate them.
+  So it will improve the performance.*/
