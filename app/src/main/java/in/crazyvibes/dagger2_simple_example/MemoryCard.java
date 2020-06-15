@@ -4,7 +4,7 @@ import javax.inject.Inject;
 
 public class MemoryCard {
 
-    @Inject
+    //@Inject               //suppose we don't have access to modify or inject this class, so we are using Dagger modules for this.
     public MemoryCard() {
     }
 }
