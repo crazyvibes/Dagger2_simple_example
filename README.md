@@ -102,7 +102,8 @@ Basic example of implementing dagger2 for dependency injection.
 - Remember to use @Inject annotation for all the constructors of the dependencies. And Remember to use a component
   interface annotated with component interface to tell dagger to construct those dependencies.
 
-/*******************************************************Dagger Modules**********************************************/
+
+# Dagger Modules
 
 - Whenever we are using dagger we should go with constructor injection for all classes you own.
 
@@ -164,3 +165,73 @@ Basic example of implementing dagger2 for dependency injection.
 
 - If your module only has static provide methods, Dagger will never need to instantiate them.
   So it will improve the performance.*/
+  
+---------------------------------------------********End Section2******----------------------------------------------------
+ 
+ 
+# Working with Interfaces
+
+- In some cases we may have Interface type as a dependency instead of a class. let’s show you how to work with interfaces:
+
+- Here, I am changing this battery class to an interface.
+
+- Let’s also add an abstract method to log the type of the battery.
+
+- Now here in this SmartPhone’s constructor we have Battery as a parameter.
+
+- But now this Battery is an interface. If we run this app now it will not work.Because at this point there is 
+  no way to construct a battery.
+
+- So We need to create a class which implements the battery interface and provide the dependency through a module.
+  So let’s create a new java class. Name it as NickelCadmiumBattery
+
+- This should implement the battery interface.
+
+- Override the showType method. Here  am going to use the same tag we used for the smartphone class.
+  Let’s log the type of the battery.
+
+- And we should annotate the constructor with @Inject annotation. If we try to run the project
+  now, Android studio will show an error message. Here we have a dependency of NickelCadmiumBattery. 
+  As it has implemented Battery interface, we know this is a Battery. But dagger does not type cast for dependencies in that   way.
+  We have to create a module and provide this dependency as a Battery dependency.
+
+- So, let’s create a new java class for the module. Name it as NCBatteryModule.
+
+- Annotate this with the @Module annotation. Let’s create a provider method now. Return type should be Battery.
+
+- Name the method as provideNCBattery. We can just return a new Nickel Cadmium Battery interface instance in this way.
+
+- But it is unnecessary. As we have annotated the constructor of the NickelCadmiumBattery with inject annotation 
+  dagger can construct that dependency. So we can use that dependency here, we don’t have to construct it again.
+
+- Now return the NickelCadmiumBattery instance. We can also invoke the showType() method before return the instance. 
+  We should also annotate this provider method with the provides annotation Dagger recognizes this returned dependency 
+  by considering the return type of the provider method. So dagger will recognize this dependency as a battery.
+
+- Now let’s go back to the SmartPhoneComponent.
+
+- Here we need to add, our newly created module to the modules list.
+
+- Now, let’s run the app to see the results.
+
+- Open the logcat and type the tag name. You can see both log values here. Our app is working as expected.
+
+- "It is very easy you need to create a class which implements the interface and you need to provide it through a module".
+
+- There is another way of doing this. You can also make this module abstract.
+
+- We should also make this provider method abstract 
+
+- An abstract method does not have a method body. So, let’s remove the method body.
+
+- I am also changing this name from provide to bind. We also need to annotate this with binds annotation.
+
+- We just removed the showType method call. But we need it to see the log results .
+
+- Therefore, I am going to add that in the constructor of the SmartPhone class.
+
+- Now we can run the app again and see how this works
+
+- our app is working as expected.
+
+---------------------------------------------********End Section3********---------------------------------------------------- 
