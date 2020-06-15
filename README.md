@@ -102,7 +102,8 @@ Basic example of implementing dagger2 for dependency injection.
 - Remember to use @Inject annotation for all the constructors of the dependencies. And Remember to use a component
   interface annotated with component interface to tell dagger to construct those dependencies.
 
-/*******************************************************Dagger Modules**********************************************/
+
+/***Dagger Modules***/
 
 - Whenever we are using dagger we should go with constructor injection for all classes you own.
 
